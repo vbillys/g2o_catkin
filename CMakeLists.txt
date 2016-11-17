@@ -7,79 +7,93 @@ catkin_simple()
 include(ExternalProject)
 
 file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o)
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o)
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/core)
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/stuff)
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/types)
+file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/solvers)
 
 ExternalProject_Add(g2o_src
-  GIT_REPOSITORY https://github.com/RainerKuemmerle/g2o.git
-  GIT_TAG "0e6246603072dec08682bffde333a6e962b14f68"
+  #GIT_REPOSITORY https://github.com/RainerKuemmerle/g2o.git
+  #GIT_TAG "0e6246603072dec08682bffde333a6e962b14f68"
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND cd ../g2o_src && mkdir -p build && cd build && cmake ../
     -DCMAKE_INSTALL_PREFIX=${CATKIN_DEVEL_PREFIX} -DCMAKE_BUILD_TYPE=Release
     -DBUILD_SHARED_LIBS=ON
-  BUILD_COMMAND cd ../g2o_src && make -j8
+  BUILD_COMMAND cd ../g2o_src/build && make -j8
   INSTALL_COMMAND cd ../g2o_src/lib/ &&
-    cp -r libg2o_calibration_odom_laser${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_cli${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_csparse_extension${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_ext_freeglut_minimal${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_hierarchical${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_interface${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_opengl_helper${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_parser${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_simulator${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_csparse${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_dense${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_eigen${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_pcg${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_slam2d_linear${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_solver_structure_only${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_stuff${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_tutorial_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_data${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_icp${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_sba${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_sclam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_sim3${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_slam2d_addons${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_slam3d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cp libg2o_types_slam3d_addons${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
-    cd ../ && mkdir -p ${CATKIN_DEVEL_PREFIX}/include/g2o/core/ &&
-    cp build/g2o/config.h ${CATKIN_DEVEL_PREFIX}/include/g2o/ &&
-    cp -r g2o ${CATKIN_DEVEL_PREFIX}/include/
+    sh -c "cp libg2o.so ${CATKIN_DEVEL_PREFIX}/lib/" &&
+    sh -c "cp ../config.h ${CATKIN_DEVEL_PREFIX}/include/g2o" &&
+    sh -c "cp ../g2o/core/*.h ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/core" &&
+    sh -c "cp ../g2o/core/*.hpp ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/core" &&
+    sh -c "cp ../g2o/stuff/*.h ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/stuff" &&
+    sh -c "cp ../g2o/types/*.h ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/types" &&
+    sh -c "cp ../g2o/types/*.hpp ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/types" &&
+    sh -c "cp ../g2o/solvers/*.h ${CATKIN_DEVEL_PREFIX}/include/g2o/g2o/solvers"
+    #cp -r libg2o_calibration_odom_laser${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_cli${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_csparse_extension${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_ext_freeglut_minimal${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_hierarchical${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_interface${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_opengl_helper${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_parser${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_simulator${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_csparse${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_dense${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_eigen${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_pcg${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_slam2d_linear${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_solver_structure_only${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_stuff${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_tutorial_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_data${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_icp${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_sba${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_sclam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_sim3${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_slam2d_addons${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_slam3d${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cp libg2o_types_slam3d_addons${CMAKE_SHARED_LIBRARY_SUFFIX} ${CATKIN_DEVEL_PREFIX}/lib/ &&
+    #cd ../ && mkdir -p ${CATKIN_DEVEL_PREFIX}/include/g2o/core/ &&
+    #cp build/g2o/config.h ${CATKIN_DEVEL_PREFIX}/include/g2o/ &&
+    #cp -r g2o ${CATKIN_DEVEL_PREFIX}/include/
 )
 
 cs_add_library(${PROJECT_NAME} src/dependency_tracker.cc)
 add_dependencies(${PROJECT_NAME} g2o_src)
 target_link_libraries(${PROJECT_NAME}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_calibration_odom_laser${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_cli${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_csparse_extension${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_ext_freeglut_minimal${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_hierarchical${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_interface${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_opengl_helper${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_parser${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_simulator${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_csparse${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_dense${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_eigen${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_pcg${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_slam2d_linear${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_structure_only${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_stuff${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_tutorial_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_data${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_icp${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sba${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sclam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sim3${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam2d_addons${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam3d_addons${CMAKE_SHARED_LIBRARY_SUFFIX}
-  ${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam3d${CMAKE_SHARED_LIBRARY_SUFFIX}
+  ${CATKIN_DEVEL_PREFIX}/lib/libg2o${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_calibration_odom_laser${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_cli${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_core${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_csparse_extension${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_ext_freeglut_minimal${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_hierarchical${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_interface${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_opengl_helper${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_parser${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_simulator${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_csparse${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_dense${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_eigen${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_pcg${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_slam2d_linear${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_solver_structure_only${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_stuff${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_tutorial_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_data${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_icp${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sba${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sclam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_sim3${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam2d_addons${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam2d${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam3d_addons${CMAKE_SHARED_LIBRARY_SUFFIX}
+  #${CATKIN_DEVEL_PREFIX}/lib/libg2o_types_slam3d${CMAKE_SHARED_LIBRARY_SUFFIX}
   )
 
 cs_install()
